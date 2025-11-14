@@ -292,7 +292,6 @@ const VehicleForm = ({
                 name="radio"
                 checked={vehicleForm.radio}
                 onChange={(e) => setVehicleForm(prev => ({ ...prev, radio: e.target.checked }))}
-                required
               />
               Radio
             </label>
@@ -302,7 +301,6 @@ const VehicleForm = ({
                 name="gps"
                 checked={vehicleForm.gps}
                 onChange={(e) => setVehicleForm(prev => ({ ...prev, gps: e.target.checked }))}
-                required
               />
               GPS
             </label>
@@ -312,7 +310,6 @@ const VehicleForm = ({
                 name="mp3"
                 checked={vehicleForm.mp3}
                 onChange={(e) => setVehicleForm(prev => ({ ...prev, mp3: e.target.checked }))}
-                required
               />
               MP3
             </label>
@@ -322,7 +319,6 @@ const VehicleForm = ({
                 name="cd"
                 checked={vehicleForm.cd}
                 onChange={(e) => setVehicleForm(prev => ({ ...prev, cd: e.target.checked }))}
-                required
               />
               CD
             </label>
@@ -339,7 +335,6 @@ const VehicleForm = ({
                 name="impot2026"
                 checked={vehicleForm.impot2026}
                 onChange={(e) => setVehicleForm(prev => ({ ...prev, impot2026: e.target.checked }))}
-                required
               />
               Impôt 2026
             </label>
@@ -349,7 +344,6 @@ const VehicleForm = ({
                 name="impot2027"
                 checked={vehicleForm.impot2027}
                 onChange={(e) => setVehicleForm(prev => ({ ...prev, impot2027: e.target.checked }))}
-                required
               />
               Impôt 2027
             </label>
@@ -359,7 +353,6 @@ const VehicleForm = ({
                 name="impot2028"
                 checked={vehicleForm.impot2028}
                 onChange={(e) => setVehicleForm(prev => ({ ...prev, impot2028: e.target.checked }))}
-                required
               />
               Impôt 2028
             </label>
@@ -369,7 +362,6 @@ const VehicleForm = ({
                 name="impot2029"
                 checked={vehicleForm.impot2029}
                 onChange={(e) => setVehicleForm(prev => ({ ...prev, impot2029: e.target.checked }))}
-                required
               />
               Impôt 2029
             </label>

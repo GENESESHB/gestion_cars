@@ -30,7 +30,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/login', {
+      const response = await axios.post('https://gestion-cars.vercel.app/api/auth/login', {
         email,
         password,
       });
@@ -81,13 +81,13 @@ const Login = () => {
               borderRadius: '12px',
               display: 'grid',
               placeItems: 'center',
-              background: '#36c275',
+              background: '#ffbb00ff',
               boxShadow: '0 6px 18px rgba(54, 194, 117, .35)',
               color: '#fff',
               fontSize: '20px',
               fontWeight: '800'
             }}>
-              W.
+              M.
             </div>
             <div style={{ textAlign: 'left' }}>
               <h1 style={{
@@ -97,7 +97,6 @@ const Login = () => {
                 margin: 0,
                 lineHeight: '1.2'
               }}>
-                WegoRent
               </h1>
               <p style={{
                 color: 'var(--muted)',
@@ -283,7 +282,7 @@ const Login = () => {
             }}
             onMouseOver={(e) => {
               if (!loading) {
-                e.target.style.background = '#2da864';
+                e.target.style.background = '#e8a30dff';
                 e.target.style.filter = 'saturate(1.05)';
               }
             }}
@@ -326,7 +325,7 @@ const Login = () => {
             Problème de connexion ?
           </p>
           <button
-            onClick={() => window.location.href = 'mailto:support@wegorent.com'}
+            onClick={() => window.location.href = 'mailto:info@mediaon.ma'}
             style={{
               width: '100%',
               padding: '12px 16px',
@@ -342,7 +341,7 @@ const Login = () => {
             onMouseOver={(e) => {
               e.target.style.background = 'var(--pill)';
               e.target.style.borderColor = '#36c275';
-              e.target.style.color = '#36c275';
+              e.target.style.color = '#fab216ff';
             }}
             onMouseOut={(e) => {
               e.target.style.background = 'transparent';
@@ -366,3 +365,4 @@ const Login = () => {
 };
 
 export default Login;
+

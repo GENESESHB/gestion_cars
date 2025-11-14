@@ -39,7 +39,7 @@ const Partner = () => {
       });
 
       const res = await axios.post(
-        'http://localhost:3001/users/demande',
+        'https://gestion-cars.vercel.app/users/demande',
         data,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       );
@@ -78,7 +78,7 @@ const Partner = () => {
                 fontSize: '20px',
                 fontWeight: '800'
               }}>
-                W
+                M.
               </div>
               <div style={{ textAlign: 'left' }}>
                 <h1 style={{
@@ -88,7 +88,6 @@ const Partner = () => {
                   margin: 0,
                   lineHeight: '1.2'
                 }}>
-                  WegoRent
                 </h1>
               </div>
             </div>

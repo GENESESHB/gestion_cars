@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
 
   const validateToken = async (token) => {
     try {
-      const response = await axios.get('http://localhost:3001/api/auth/validate', {
+      const response = await axios.get('https://gestion-cars.vercel.app/api/auth/validate', {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log('✅ Token validé:', response.data);
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }) => {
       console.log('🔍 Decoded payload:', decodedPayload);
 
       // Récupérer les données utilisateur complètes
-      const response = await axios.get(`http://localhost:3001/api/user/${userId}`, {
+      const response = await axios.get(`https://gestion-cars.vercel.app/api/user/${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

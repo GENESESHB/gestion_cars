@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root{
-  /* colors */
-  --brand:#28a745; --brand-2:#1e8a3a; --brand-3:#23b04a;
+  /* colors - Updated to Orange and Blue */
+  --brand:#ff6b00; --brand-2:#e55a00; --brand-3:#ff8c00;
   --text:#0e2336; --muted:#6b7b8a; --ring:#e6eaee; --card:#fff; --pill:#f3f6f8;
   --shadow:0 10px 30px rgba(0,0,0,.18);
-  --focus:0 0 0 3px rgba(35,160,90,.28),0 0 0 1px var(--brand);
-  --green:#35c24d; --green-soft:#c9f0cf;
+  --focus:0 0 0 3px rgba(255, 107, 0, 0.28),0 0 0 1px var(--brand);
+  --blue:#007bff; --blue-soft:#c9e3ff;
 
   /* scale */
   --radius:18px; --radius-lg:24px;
@@ -48,7 +48,7 @@ body{
 }
 .brand .logo{
   width:34px;height:34px;border-radius:8px;display:grid;place-items:center;
-  background:#36c275;box-shadow:0 6px 18px rgba(54,194,117,.35);color:#fff;
+  background:linear-gradient(135deg, #ff6b00, #ff8c00);box-shadow:0 6px 18px rgba(255, 107, 0, 0.35);color:#fff;
 }
 
 /* Desktop menu */
@@ -56,7 +56,8 @@ body{
   display:flex;align-items:center;gap:var(--space-3);color:#fff;font-weight:600;
 }
 .chip{background:rgba(255,255,255,.12);padding:6px 10px;border-radius:999px}
-.signin{background:#fff;color:#0f1720;border-radius:10px;padding:8px 14px;text-decoration:none;font-weight:700}
+.signin{background:var(--blue);color:#fff;border-radius:10px;padding:8px 14px;text-decoration:none;font-weight:700;transition:all 0.3s ease;}
+.signin:hover{background:#0066cc;transform:translateY(-2px);}
 
 /* Mobile menu button */
 .hamburger{
@@ -108,15 +109,15 @@ body{
 .is-disabled{opacity:.7;cursor:not-allowed}
 .hide{display:none !important}
 
-/* CTA button */
+/* CTA button - Updated to Orange */
 .cta{
   display:flex;align-items:center;justify-content:center;gap:10px;min-height:58px;padding:0 26px;border:0;border-radius:14px;
-  background:var(--brand);color:#fff;font-weight:900;font-size:16px;cursor:pointer;
-  box-shadow:0 10px 22px rgba(40,167,69,.28), inset 0 -2px 0 rgba(0,0,0,.08);
+  background:linear-gradient(45deg, var(--brand), var(--brand-3));color:#fff;font-weight:900;font-size:16px;cursor:pointer;
+  box-shadow:0 10px 22px rgba(255, 107, 0, 0.28), inset 0 -2px 0 rgba(0,0,0,.08);
   transition:transform .06s ease, box-shadow .2s ease, background .2s ease, filter .2s ease;
 }
-.cta:hover{background:var(--brand-3);filter:saturate(1.05)}
-.cta:active{transform:translateY(1px);box-shadow:0 6px 16px rgba(40,167,69,.33), inset 0 1px 0 rgba(255,255,255,.2)}
+.cta:hover{background:linear-gradient(45deg, var(--brand-2), var(--brand));filter:saturate(1.05)}
+.cta:active{transform:translateY(1px);box-shadow:0 6px 16px rgba(255, 107, 0, 0.33), inset 0 1px 0 rgba(255,255,255,.2)}
 .cta:focus-visible{outline:none;box-shadow:var(--focus)}
 
 /* Location dropdown */
@@ -147,8 +148,8 @@ body{
 .day{height:36px;border-radius:8px;display:grid;place-items:center;cursor:pointer;color:#243142;font-weight:600}
 .day.disabled{opacity:.35;pointer-events:none}
 .day:hover{background:#f3f7fb}
-.in-range{background:var(--green-soft)}
-.start,.end{background:var(--green);color:#fff}
+.in-range{background:var(--blue-soft)}
+.start,.end{background:var(--blue);color:#fff}
 .start{border-top-left-radius:12px;border-bottom-left-radius:12px}
 .end{border-top-right-radius:12px;border-bottom-right-radius:12px}
 
@@ -213,15 +214,15 @@ body{
   overflow:hidden; box-shadow: var(--shadow,0 10px 30px rgba(0,0,0,.08)); display:flex; flex-direction:column; }
 .cardX-media { position:relative; height:190px; overflow:hidden; }
 .cardX-media img { width:100%; height:100%; object-fit:cover; display:block; }
-.cardX-badge { position:absolute; left:12px; top:12px; background:#36c275; color:#fff; font-weight:800;
-  font-size:12px; padding:6px 10px; border-radius:999px; box-shadow:0 6px 18px rgba(54,194,117,.35); }
+.cardX-badge { position:absolute; left:12px; top:12px; background:linear-gradient(135deg, #ff6b00, #ff8c00); color:#fff; font-weight:800;
+  font-size:12px; padding:6px 10px; border-radius:999px; box-shadow:0 6px 18px rgba(255, 107, 0, 0.35); }
 .cardX-body { padding:14px; display:flex; flex-direction:column; gap:10px; }
 .cardX-title { font-weight:800; color:#142534; margin:0; }
 .cardX-rating { display:flex; align-items:center; gap:8px; }
 .rate-bubble { background:#e8f7eb; color:#1e8a3a; border-radius:8px; padding:2px 8px; font-weight:800; }
 .muted { color:#6b7b8a; font-weight:600; }
 .cardX-bottom { display:flex; align-items:center; justify-content:space-between; margin-top:4px; }
-.cta-link { border:0; background:transparent; color:#23b04a; font-weight:800; cursor:pointer; }
+.cta-link { border:0; background:transparent; color:var(--brand); font-weight:800; cursor:pointer; }
 .cta-link:hover { text-decoration: underline; }
 .price { text-align:left; }
 /* wrapper keeps it aligned with your container */
@@ -374,7 +375,7 @@ body{
   pointer-events: none;
 }
 
-/*  BOOTS CSS DESIGNE */
+/*  BOOTS CSS DESIGNE - Updated to Orange and Blue */
 * {
   margin: 0;
   padding: 0;
@@ -393,7 +394,7 @@ body {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background: #27ae60;
+  background: linear-gradient(135deg, #ff6b00, #ff8c00);
   color: white;
   border: none;
   border-radius: 50%;
@@ -401,12 +402,12 @@ body {
   height: 60px;
   font-size: 28px;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 4px 10px rgba(255, 107, 0, 0.3);
   transition: background 0.3s, transform 0.2s;
   z-index: 1000;
 }
 #chat-toggle:hover {
-  background: #219653;
+  background: linear-gradient(135deg, #e55a00, #ff6b00);
   transform: scale(1.1);
 }
 
@@ -432,7 +433,7 @@ body {
 }
 
 .chat-header {
-  background: linear-gradient(135deg, #d35400, #e67e22);
+  background: linear-gradient(135deg, #ff6b00, #007bff);
   color: white;
   padding: 12px;
   font-size: 1.2rem;
@@ -453,7 +454,7 @@ body {
   max-width: 80%;
 }
 .user-message {
-  background: #3498db;
+  background: var(--blue);
   color: white;
   margin-left: auto;
   border-bottom-right-radius: 5px;
@@ -481,7 +482,7 @@ body {
   font-size: 1rem;
 }
 .input-container button {
-  background: #27ae60;
+  background: linear-gradient(135deg, #ff6b00, #ff8c00);
   color: white;
   border: none;
   border-radius: 50%;
@@ -496,7 +497,7 @@ body {
   transition: background 0.3s, transform 0.2s;
 }
 .input-container button:hover {
-  background: #219653;
+  background: linear-gradient(135deg, #e55a00, #ff6b00);
   transform: scale(1.05);
 }
 section.herohbnb {
@@ -516,4 +517,3 @@ section.herohbnb {
       height: 700px; /* keep 1000px for very small screens too */
    }
 }
-
