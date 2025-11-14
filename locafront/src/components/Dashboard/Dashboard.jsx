@@ -6,7 +6,9 @@ import Overview from './components/Overview';
 import VehiclesManagement from './components/VehiclesManagement';
 import ContractsManagement from './components/ContractsManagement';
 import BlacklistManagement from './components/BlacklistManagement';
-import ClientsManagement from './components/ClientsManagement'; // New import
+import ClientsManagement from './components/ClientsManagement';
+import SmartContractsManagement from './components/SmartContractsManagement'; // New import
+import InsuranceManagement from './components/InsuranceManagement'; // New import
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -15,7 +17,9 @@ const Dashboard = () => {
   const [vehicles, setVehicles] = useState([]);
   const [contracts, setContracts] = useState([]);
   const [blacklist, setBlacklist] = useState([]);
-  const [clients, setClients] = useState([]); // New state
+  const [clients, setClients] = useState([]);
+  const [smartContracts, setSmartContracts] = useState([]); // New state
+  const [insurances, setInsurances] = useState([]); // New state
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -23,11 +27,13 @@ const Dashboard = () => {
     if (user) {
       console.log('🔑 Token:', localStorage.getItem('token'));
       console.log('👤 User:', user);
-      
+
       loadVehicles();
       loadContracts();
       loadBlacklist();
-      loadClients(); // Load clients
+      loadClients();
+      loadSmartContracts(); // Load smart contracts
+      loadInsurances(); // Load insurances
     }
   }, [user]);
 
@@ -64,7 +70,6 @@ const Dashboard = () => {
     }
   };
 
-  // New function to load clients
   const loadClients = async () => {
     try {
       setLoading(true);
@@ -79,22 +84,58 @@ const Dashboard = () => {
     }
   };
 
+  // New function to load smart contracts
+  const loadSmartContracts = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get('/smart-contracts/my-contracts');
+      console.log('✅ Smart contracts chargés:', res.data);
+      setSmartContracts(res.data.smartContracts);
+    } catch (err) {
+      console.error('❌ Erreur loading smart contracts:', err);
+      setMessage('Erreur lors du chargement des smart contracts');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // New function to load insurances
+  const loadInsurances = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get('/insurances/my-insurances');
+      console.log('✅ Assurances chargées:', res.data);
+      setInsurances(res.data.insurances);
+    } catch (err) {
+      console.error('❌ Erreur loading insurances:', err);
+      setMessage('Erreur lors du chargement des assurances');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const renderActiveSection = () => {
     const commonProps = {
       user,
       vehicles,
       contracts,
       blacklist,
-      clients, // Add clients to props
+      clients,
+      smartContracts, // Add smart contracts to props
+      insurances, // Add insurances to props
       setVehicles,
       setContracts,
       setBlacklist,
-      setClients, // Add setClients to props
+      setClients,
+      setSmartContracts, // Add setSmartContracts to props
+      setInsurances, // Add setInsurances to props
       setMessage,
       loadVehicles,
       loadContracts,
       loadBlacklist,
-      loadClients // Add loadClients to props
+      loadClients,
+      loadSmartContracts, // Add loadSmartContracts to props
+      loadInsurances // Add loadInsurances to props
     };
 
     switch (activeSection) {
@@ -104,16 +145,20 @@ const Dashboard = () => {
         return <VehiclesManagement {...commonProps} />;
       case 'contracts':
         return <ContractsManagement {...commonProps} />;
+      case 'smart-contracts': // New case
+        return <SmartContractsManagement {...commonProps} />;
+      case 'insurances': // New case
+        return <InsuranceManagement {...commonProps} />;
       case 'blacklist':
         return <BlacklistManagement {...commonProps} />;
-      case 'clients': // New case
+      case 'clients':
         return <ClientsManagement {...commonProps} />;
       default:
         return <Overview {...commonProps} />;
     }
   };
 
-  // SVG Icons - Add ClientsIcon
+  // SVG Icons - Add SmartContractsIcon and InsuranceIcon
   const OverviewIcon = () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <rect x="3" y="3" width="7" height="7"></rect>
@@ -142,6 +187,21 @@ const Dashboard = () => {
     </svg>
   );
 
+  // New Smart Contracts Icon
+  const SmartContractsIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+    </svg>
+  );
+
+  // New Insurance Icon
+  const InsuranceIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+      <path d="M9 12l2 2 4-4"></path>
+    </svg>
+  );
+
   const BlacklistIcon = () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <circle cx="12" cy="12" r="10"></circle>
@@ -150,7 +210,6 @@ const Dashboard = () => {
     </svg>
   );
 
-  // New Clients Icon
   const ClientsIcon = () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
@@ -172,7 +231,9 @@ const Dashboard = () => {
     { id: 'overview', label: 'Vue d\'ensemble', icon: <OverviewIcon /> },
     { id: 'vehicles', label: 'Véhicules', icon: <VehiclesIcon /> },
     { id: 'contracts', label: 'Contrats', icon: <ContractsIcon /> },
-    { id: 'clients', label: 'Clients', icon: <ClientsIcon /> }, // New menu item
+    { id: 'smart-contracts', label: 'Smart Contrats', icon: <SmartContractsIcon /> }, // New menu item
+    { id: 'insurances', label: 'Assurances', icon: <InsuranceIcon /> }, // New menu item
+    { id: 'clients', label: 'Clients', icon: <ClientsIcon /> },
     { id: 'blacklist', label: 'Liste Noire', icon: <BlacklistIcon /> }
   ];
 
