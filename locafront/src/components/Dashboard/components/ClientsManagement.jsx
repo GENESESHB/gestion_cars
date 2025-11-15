@@ -1,6 +1,8 @@
 // components/ClientsManagement.jsx
 import React, { useState } from 'react';
 import api from '../../../utils/api';
+import { FiEdit2, FiTrash2, FiShieldOff, FiUserPlus } from 'react-icons/fi';
+import './ClientsManagement.css';
 
 const ClientsManagement = ({ user, clients, setClients, setMessage, loadClients, blacklist }) => {
   const [showForm, setShowForm] = useState(false);
@@ -69,11 +71,11 @@ const ClientsManagement = ({ user, clients, setClients, setMessage, loadClients,
 
       if (editingClient) {
         // Update client
-        const res = await api.put(`/clients/${editingClient._id}`, formData);
+        await api.put(`/clients/${editingClient._id}`, formData);
         setMessage('✅ Client modifié avec succès');
       } else {
         // Create new client
-        const res = await api.post('/clients', formData);
+        await api.post('/clients', formData);
         setMessage('✅ Client ajouté avec succès');
       }
 
@@ -198,68 +200,74 @@ const ClientsManagement = ({ user, clients, setClients, setMessage, loadClients,
   const ClientCard = ({ client }) => (
     <div className="client-card">
       <div className="client-header">
-        <h3>{client.lastName} {client.firstName}</h3>
+        <div className="client-title-block">
+          <h3>{client.lastName} {client.firstName}</h3>
+          <span className="client-subtitle">
+            {client.phone || '—'} · {client.cin || client.passport || 'Sans ID'}
+          </span>
+        </div>
+
         <div className="client-actions">
           <button
             onClick={() => handleEdit(client)}
-            className="btn-edit"
+            className="icon-btn icon-btn-edit"
             title="Modifier"
           >
-            ✏️
+            <FiEdit2 />
           </button>
           <button
             onClick={() => handleOpenBlacklistForm(client)}
-            className="btn-blacklist"
+            className="icon-btn icon-btn-blacklist"
             title="Ajouter à la liste noire"
           >
-            ⚠️
+            <FiShieldOff />
           </button>
           <button
             onClick={() => handleDelete(client._id)}
-            className="btn-delete"
+            className="icon-btn icon-btn-delete"
             title="Supprimer"
           >
-            🗑️
+            <FiTrash2 />
           </button>
         </div>
       </div>
 
       <div className="client-info">
         <div className="info-row">
-          <span className="info-label">Nom:</span>
+          <span className="info-label">Nom</span>
           <span className="info-value">{client.lastName}</span>
         </div>
         <div className="info-row">
-          <span className="info-label">Prénom:</span>
+          <span className="info-label">Prénom</span>
           <span className="info-value">{client.firstName}</span>
         </div>
         <div className="info-row">
-          <span className="info-label">Date de naissance:</span>
+          <span className="info-label">Date de naissance</span>
           <span className="info-value">{formatDate(client.birthDate)}</span>
         </div>
         <div className="info-row">
-          <span className="info-label">Téléphone:</span>
-          <span className="info-value">{client.phone}</span>
+          <span className="info-label">Téléphone</span>
+          <span className="info-value">{client.phone || 'N/A'}</span>
         </div>
         <div className="info-row">
-          <span className="info-label">CIN:</span>
+          <span className="info-label">CIN</span>
           <span className="info-value">{client.cin || 'N/A'}</span>
         </div>
         <div className="info-row">
-          <span className="info-label">Passeport:</span>
+          <span className="info-label">Passeport</span>
           <span className="info-value">{client.passport || 'N/A'}</span>
         </div>
         <div className="info-row">
-          <span className="info-label">Permis:</span>
+          <span className="info-label">Permis</span>
           <span className="info-value">{client.licenseNumber || 'N/A'}</span>
         </div>
         <div className="info-row">
-          <span className="info-label">Date d'émission permis:</span>
+          <span className="info-label">Date d'émission permis</span>
           <span className="info-value">{formatDate(client.licenseIssueDate)}</span>
         </div>
         {client.address && (
           <div className="info-row">
-            <span className="info-label">Adresse:</span>
+            <span className="info-label">Adresse</span>
             <span className="info-value">{client.address}</span>
           </div>
         )}
@@ -273,9 +281,10 @@ const ClientsManagement = ({ user, clients, setClients, setMessage, loadClients,
         <h1>Gestion des Clients</h1>
         <button
           onClick={() => setShowForm(true)}
-          className="btn-primary"
+          className="btn-primary btn-with-icon"
         >
-          + Ajouter un Client
+          <FiUserPlus />
+          <span>Ajouter un client</span>
         </button>
       </div>
 

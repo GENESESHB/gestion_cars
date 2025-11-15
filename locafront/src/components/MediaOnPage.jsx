@@ -77,24 +77,7 @@ const MediaOnPage = () => {
         </div>
 
         <div className="devices">
-          <div className="laptop">
-            <img
-              src="https://i.pinimg.com/1200x/05/76/ae/0576ae3ab30ad17683b0f9417aeae217.jpg"
-              alt="Interface MediaOn sur ordinateur"
-            />
-          </div>
-          <div className="tablet">
-            <img
-              src="https://i.pinimg.com/736x/e2/00/7d/e2007d3247bc57279b51a2a13feb52c9.jpg"
-              alt="Interface MediaOn sur tablette"
-            />
-          </div>
-          <div className="phone">
-            <img
-              src="https://i.pinimg.com/736x/9d/67/54/9d675463d2310266db37b2622582196f.jpg"
-              alt=" MediaOn sur mobile"
-            />
-          </div>
+          <img src="../assets/home.png" alt="medaion" />
         </div>
       </section>
 

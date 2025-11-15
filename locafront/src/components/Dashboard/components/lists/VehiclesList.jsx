@@ -1,242 +1,209 @@
+
 // components/lists/VehiclesList.jsx
-import React from 'react';
-import VehicleCard from './VehicleCard';
+import React, { useMemo, useState } from 'react';
+import { FiEdit2, FiTrash2, FiPower } from 'react-icons/fi';
 
 const VehiclesList = ({ vehicles, onEdit, onDelete, onToggleAvailability }) => {
+  const [search, setSearch] = useState('');
+  const [filterType, setFilterType] = useState('');
+  const [filterStatus, setFilterStatus] = useState(''); // '', 'available', 'unavailable'
+
+  const vehicleTypes = useMemo(() => {
+    const types = Array.from(new Set(vehicles.map(v => v.type).filter(Boolean)));
+    return types;
+  }, [vehicles]);
+
+  const createOptionsLabel = (v) => {
+    const opts = [];
+    if (v.gps) opts.push('GPS');
+    if (v.radio) opts.push('Radio');
+    if (v.mp3) opts.push('MP3');
+    if (v.cd) opts.push('CD');
+    return opts.length ? opts.join(' • ') : 'Aucun équipement spécial';
+  };
+
+  const filteredVehicles = useMemo(() => {
+    return vehicles.filter((v) => {
+      const q = search.toLowerCase().trim();
+
+      const matchesSearch =
+        !q ||
+        v.name?.toLowerCase().includes(q) ||
+        v.type?.toLowerCase().includes(q) ||
+        v.carburant?.toLowerCase().includes(q);
+
+      const matchesType = !filterType || v.type === filterType;
+
+      const matchesStatus =
+        !filterStatus ||
+        (filterStatus === 'available' && v.available) ||
+        (filterStatus === 'unavailable' && !v.available);
+
+      return matchesSearch && matchesType && matchesStatus;
+    });
+  }, [vehicles, search, filterType, filterStatus]);
+
   if (!vehicles || vehicles.length === 0) {
     return (
-      <div style={{
-        textAlign: 'center',
-        padding: '40px',
-        color: '#666',
-        backgroundColor: '#f9f9f9',
-        borderRadius: '8px',
-        marginTop: '20px'
-      }}>
+      <div className="vehicles-empty">
         <h3>Aucun véhicule trouvé</h3>
-        <p>Ajoutez votre premier véhicule pour commencer</p>
+        <p>Ajoutez votre premier véhicule pour commencer.</p>
       </div>
     );
   }
 
-  const availableVehicles = vehicles.filter(v => v.available);
-  const unavailableVehicles = vehicles.filter(v => !v.available);
+  const handleDeleteClick = (id) => {
+    if (window.confirm('Voulez-vous vraiment supprimer ce véhicule ?')) {
+      onDelete(id);
+    }
+  };
+
+  const total = vehicles.length;
 
   return (
-    <div>
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: '20px',
-        padding: '16px',
-        backgroundColor: 'white',
-        borderRadius: '8px',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
-      }}>
-        <h2 style={{ margin: 0, color: '#333' }}>
-          Mes Véhicules ({vehicles.length})
-          {availableVehicles.length > 0 && (
-            <span style={{ fontSize: '14px', color: '#16a34a', marginLeft: '8px' }}>
-              • {availableVehicles.length} disponible{availableVehicles.length > 1 ? 's' : ''}
-            </span>
-          )}
-          {unavailableVehicles.length > 0 && (
-            <span style={{ fontSize: '14px', color: '#dc2626', marginLeft: '8px' }}>
-              • {unavailableVehicles.length} indisponible{unavailableVehicles.length > 1 ? 's' : ''}
-            </span>
-          )}
-        </h2>
-        
-        {/* Légende des statuts */}
-        <div style={{ display: 'flex', gap: '12px', fontSize: '14px', color: '#666', flexWrap: 'wrap' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <div style={{ width: '12px', height: '12px', backgroundColor: '#16a34a', borderRadius: '50%' }}></div>
-            <span>Disponible</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <div style={{ width: '12px', height: '12px', backgroundColor: '#dc2626', borderRadius: '50%' }}></div>
-            <span>Indisponible</span>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <div style={{ width: '12px', height: '12px', backgroundColor: '#f59e0b', borderRadius: '50%' }}></div>
-            <span>Réservé</span>
-          </div>
+    <div className="vehicles-list-wrapper">
+      {/* TOPBAR LISTE */}
+      <header className="vehicles-list-topbar">
+        <div className="vlt-left">
+          <h2>Parc véhicules</h2>
+          <span>{total} véhicule{total > 1 ? 's' : ''} dans votre parc</span>
         </div>
-      </div>
 
-      {/* Statistiques des véhicules */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: '15px',
-        marginBottom: '25px'
-      }}>
-        <div style={{
-          padding: '15px',
-          backgroundColor: '#f0f9ff',
-          borderRadius: '8px',
-          border: '1px solid #bae6fd',
-          textAlign: 'center'
-        }}>
-          <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#0369a1' }}>
-            {vehicles.length}
+        <div className="vlt-right">
+          <div className="vlt-search">
+            <input
+              type="text"
+              placeholder="Rechercher par nom, type, carburant..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
           </div>
-          <div style={{ fontSize: '14px', color: '#0c4a6e' }}>Total Véhicules</div>
-        </div>
-        
-        <div style={{
-          padding: '15px',
-          backgroundColor: '#f0fdf4',
-          borderRadius: '8px',
-          border: '1px solid #bbf7d0',
-          textAlign: 'center'
-        }}>
-          <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#16a34a' }}>
-            {availableVehicles.length}
-          </div>
-          <div style={{ fontSize: '14px', color: '#166534' }}>Disponibles</div>
-        </div>
-        
-        <div style={{
-          padding: '15px',
-          backgroundColor: '#fef2f2',
-          borderRadius: '8px',
-          border: '1px solid #fecaca',
-          textAlign: 'center'
-        }}>
-          <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#dc2626' }}>
-            {unavailableVehicles.length}
-          </div>
-          <div style={{ fontSize: '14px', color: '#991b1b' }}>Indisponibles</div>
-        </div>
-        
-        <div style={{
-          padding: '15px',
-          backgroundColor: '#fffbeb',
-          borderRadius: '8px',
-          border: '1px solid #fed7aa',
-          textAlign: 'center'
-        }}>
-          <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#d97706' }}>
-            {vehicles.filter(v => v.dommages && v.dommages.length > 0).length}
-          </div>
-          <div style={{ fontSize: '14px', color: '#92400e' }}>Avec Dommages</div>
-        </div>
-      </div>
 
-      {/* Available Vehicles */}
-      {availableVehicles.length > 0 && (
-        <div style={{ marginBottom: '30px' }}>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '16px',
-            paddingBottom: '8px',
-            borderBottom: '2px solid #16a34a'
-          }}>
-            <h3 style={{ color: '#16a34a', margin: 0 }}>
-              ✅ Véhicules Disponibles ({availableVehicles.length})
-            </h3>
-            <div style={{
-              fontSize: '14px',
-              color: '#16a34a',
-              backgroundColor: '#f0fdf4',
-              padding: '4px 8px',
-              borderRadius: '4px',
-              fontWeight: 'bold'
-            }}>
-              Prêts à être loués
-            </div>
-          </div>
-          <div className="vehicles-grid" style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
-            gap: '20px'
-          }}>
-            {availableVehicles.map(vehicle => (
-              <VehicleCard
-                key={vehicle._id}
-                vehicle={vehicle}
-                onEdit={onEdit}
-                onDelete={onDelete}
-                onToggleAvailability={onToggleAvailability}
-              />
+          <select
+            value={filterType}
+            onChange={(e) => setFilterType(e.target.value)}
+          >
+            <option value="">Tous les types</option>
+            {vehicleTypes.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
             ))}
-          </div>
-        </div>
-      )}
+          </select>
 
-      {/* Unavailable Vehicles */}
-      {unavailableVehicles.length > 0 && (
+          <select
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
+            <option value="">Tous les statuts</option>
+            <option value="available">Disponible</option>
+            <option value="unavailable">Non disponible</option>
+          </select>
+        </div>
+      </header>
+
+      {/* TABLE / CARD */}
+      <section className="list-card">
+        <div className="list-header">
+          <div>Véhicule</div>
+          <div>Caractéristiques</div>
+          <div>Équipements</div>
+          <div>Prix</div>
+          <div>Actions</div>
+        </div>
+
         <div>
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '16px',
-            paddingBottom: '8px',
-            borderBottom: '2px solid #dc2626'
-          }}>
-            <h3 style={{ color: '#dc2626', margin: 0 }}>
-              ⏸️ Véhicules Indisponibles ({unavailableVehicles.length})
-            </h3>
-            <div style={{
-              fontSize: '14px',
-              color: '#dc2626',
-              backgroundColor: '#fef2f2',
-              padding: '4px 8px',
-              borderRadius: '4px',
-              fontWeight: 'bold'
-            }}>
-              En maintenance ou loués
-            </div>
-          </div>
-          <div className="vehicles-grid" style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))',
-            gap: '20px'
-          }}>
-            {unavailableVehicles.map(vehicle => (
-              <VehicleCard
-                key={vehicle._id}
-                vehicle={vehicle}
-                onEdit={onEdit}
-                onDelete={onDelete}
-                onToggleAvailability={onToggleAvailability}
-              />
-            ))}
-          </div>
-        </div>
-      )}
+          {filteredVehicles.map((v) => (
+            <div key={v._id} className="vehicle-row">
+              {/* Col 1 : image + nom + type */}
+              <div className="vehicle-main">
+                <div className="vehicle-img-wrap">
+                  {v.image ? (
+                    <img src={v.image} alt={v.name} />
+                  ) : (
+                    <div className="vehicle-img-placeholder">No image</div>
+                  )}
+                </div>
+                <div>
+                  <div className="vehicle-info-title">{v.name || 'Sans nom'}</div>
+                  <div className="vehicle-info-sub">
+                    {v.carburant || '—'} • {v.boiteVitesse || '—'}
+                  </div>
+                  {v.type && (
+                    <div className="badge badge-type">{v.type}</div>
+                  )}
+                </div>
+              </div>
 
-      {/* Information sur les nouvelles fonctionnalités */}
-      <div style={{
-        marginTop: '30px',
-        padding: '20px',
-        backgroundColor: '#f8fafc',
-        borderRadius: '8px',
-        border: '1px solid #e2e8f0'
-      }}>
-        <h4 style={{ margin: '0 0 10px 0', color: '#475569' }}>📋 Informations des véhicules</h4>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '10px',
-          fontSize: '12px',
-          color: '#64748b'
-        }}>
-          <div>• 🚗 Type et carburant</div>
-          <div>• ⚙️ Boîte de vitesse</div>
-          <div>• 📻 Équipements audio</div>
-          <div>• 🗝️ Nombre de clés</div>
-          <div>• 🛣️ Kilométrage</div>
-          <div>• 📅 Assurance et vidange</div>
-          <div>• 💰 Impôts 2026-2029</div>
-          <div>• 🚨 Parties endommagées</div>
+              {/* Col 2 : caractéristiques */}
+              <div className="vehicle-specs">
+                <span className="spec-pill">Carburant : {v.carburant || '—'}</span>
+                <span className="spec-pill">Boîte : {v.boiteVitesse || '—'}</span>
+                <span className="spec-pill">Clés : {v.nombreCles ?? '—'}</span>
+                <span className="spec-pill">Réservoir : {v.niveauReservoir || '—'}</span>
+              </div>
+
+              {/* Col 3 : équipements */}
+              <div className="vehicle-options">
+                {createOptionsLabel(v)}
+              </div>
+
+              {/* Col 4 : prix + statut */}
+              <div className="vehicle-price">
+                {v.pricePerDay ? (
+                  <>
+                    {v.pricePerDay} <span>MAD/jour</span>
+                  </>
+                ) : (
+                  <span>—</span>
+                )}
+                <br />
+                <span
+                  className={
+                    'badge-status ' + (v.available ? '' : 'offline')
+                  }
+                >
+                  {v.available ? 'Disponible' : 'Non dispo'}
+                </span>
+              </div>
+
+              {/* Col 5 : actions */}
+              <div className="vehicle-actions">
+                {/* <button
+                  type="button"
+                  className={`btn-icon btn-icon--status ${v.available ? 'on' : 'off'}`}
+                  onClick={() => onToggleAvailability(v._id, !v.available)}
+                >
+                  <FiPower />
+                  <span>{v.available ? 'Désactiver' : 'Activer'}</span>
+                </button> */}
+
+                <button
+                  type="button"
+                  className="btn-icon btn-icon--edit"
+                  onClick={() => onEdit(v)}
+                >
+                  <FiEdit2 />
+                  <span>Modifier</span>
+                </button>
+
+                <button
+                  type="button"
+                  className="btn-icon btn-icon--delete"
+                  onClick={() => handleDeleteClick(v._id)}
+                >
+                  <FiTrash2 />
+                  <span>Supprimer</span>
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
+
+        <div className="list-footer">
+          <span>{filteredVehicles.length} véhicule(s) affiché(s)</span>
+        </div>
+      </section>
     </div>
   );
 };
