@@ -2,11 +2,10 @@
 import React, { useState } from 'react';
 import InsuranceList from './lists/InsuranceList';
 
-const InsuranceManagement = ({ 
-  user, 
-  vehicles, 
-  insurances, 
-  setMessage 
+const InsuranceManagement = ({
+  user,
+  vehicles,
+  insurances
 }) => {
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
@@ -23,7 +22,7 @@ const InsuranceManagement = ({
 
   function getInsuranceStatus(startDate, endDate) {
     if (!startDate || !endDate) return 'no-insurance';
-    
+
     const now = new Date();
     const start = new Date(startDate);
     const end = new Date(endDate);
@@ -35,9 +34,9 @@ const InsuranceManagement = ({
 
   const filteredVehicles = vehiclesWithInsurance.filter(vehicle => {
     const matchesFilter = filter === 'all' || vehicle.insuranceInfo.status === filter;
-    
+
     const searchLower = searchTerm.toLowerCase();
-    const matchesSearch = 
+    const matchesSearch =
       vehicle.name?.toLowerCase().includes(searchLower) ||
       vehicle.type?.toLowerCase().includes(searchLower) ||
       vehicle.matricule?.toLowerCase().includes(searchLower);
@@ -155,11 +154,11 @@ const InsuranceManagement = ({
           .insurance-stats {
             grid-template-columns: 1fr 1fr;
           }
-          
+
           .page-header {
             padding: 16px;
           }
-          
+
           .page-header h1 {
             font-size: 24px;
           }

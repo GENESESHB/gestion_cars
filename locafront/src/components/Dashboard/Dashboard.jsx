@@ -496,7 +496,8 @@ const Dashboard = () => {
       loadBlacklist,
       loadClients,
       loadSmartContracts,
-      loadInsurances
+      loadInsurances,
+      loadClients
     };
 
     switch (activeSection) {

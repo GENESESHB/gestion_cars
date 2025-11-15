@@ -19,47 +19,47 @@ const InsuranceList = ({
 
   const getDaysRemaining = (endDate) => {
     if (!endDate) return null;
-    
+
     const end = new Date(endDate);
     const now = new Date();
     const diffTime = end - now;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
+
     return diffDays;
   };
 
   const getStatusConfig = (status, endDate) => {
     const daysRemaining = endDate ? getDaysRemaining(endDate) : null;
-    
+
     const configs = {
-      'active': { 
-        color: '#10b981', 
-        label: 'Active', 
+      'active': {
+        color: '#10b981',
+        label: 'Active',
         icon: '✅',
         badge: daysRemaining > 30 ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
       },
-      'pending': { 
-        color: '#f59e0b', 
-        label: 'En attente', 
+      'pending': {
+        color: '#f59e0b',
+        label: 'En attente',
         icon: '⏳',
         badge: 'bg-yellow-100 text-yellow-800'
       },
-      'expired': { 
-        color: '#ef4444', 
-        label: 'Expirée', 
+      'expired': {
+        color: '#ef4444',
+        label: 'Expirée',
         icon: '❌',
         badge: 'bg-red-100 text-red-800'
       },
-      'no-insurance': { 
-        color: '#6b7280', 
-        label: 'Non assuré', 
+      'no-insurance': {
+        color: '#6b7280',
+        label: 'Non assuré',
         icon: '🚫',
         badge: 'bg-gray-100 text-gray-800'
       }
     };
 
     const config = configs[status] || configs['no-insurance'];
-    
+
     // Add warning for insurance expiring soon
     if (status === 'active' && daysRemaining <= 30 && daysRemaining > 0) {
       config.label = `Expire dans ${daysRemaining} jour(s)`;
@@ -77,8 +77,8 @@ const InsuranceList = ({
       <div className="insurance-list-container">
         <div className="filters-section">
           <div className="filters">
-            <select 
-              value={filter} 
+            <select
+              value={filter}
               onChange={(e) => setFilter(e.target.value)}
               className="filter-select"
             >
@@ -99,10 +99,10 @@ const InsuranceList = ({
           </div>
         </div>
 
-        <div style={{ 
-          textAlign: 'center', 
-          padding: '60px 20px', 
-          background: 'white', 
+        <div style={{
+          textAlign: 'center',
+          padding: '60px 20px',
+          background: 'white',
           borderRadius: '12px',
           boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
         }}>
@@ -119,8 +119,8 @@ const InsuranceList = ({
       {/* Filters and Search */}
       <div className="filters-section">
         <div className="filters">
-          <select 
-            value={filter} 
+          <select
+            value={filter}
             onChange={(e) => setFilter(e.target.value)}
             className="filter-select"
           >
@@ -150,7 +150,7 @@ const InsuranceList = ({
         {vehicles.map(vehicle => {
           const statusConfig = getStatusConfig(vehicle.insuranceInfo.status, vehicle.insuranceInfo.endDate);
           const daysRemaining = getDaysRemaining(vehicle.insuranceInfo.endDate);
-          
+
           return (
             <div key={vehicle._id} className="vehicle-card">
               {/* Vehicle Header */}
@@ -205,7 +205,7 @@ const InsuranceList = ({
                 {vehicle.insuranceInfo.startDate && vehicle.insuranceInfo.endDate && vehicle.insuranceInfo.status === 'active' && (
                   <div className="progress-section">
                     <div className="progress-bar">
-                      <div 
+                      <div
                         className="progress-fill"
                         style={{
                           width: `${Math.max(0, Math.min(100, daysRemaining <= 0 ? 0 : (daysRemaining / 365) * 100))}%`,
@@ -219,24 +219,6 @@ const InsuranceList = ({
                     </div>
                   </div>
                 )}
-              </div>
-
-              {/* Vehicle Details */}
-              <div className="vehicle-details">
-                <div className="detail-item">
-                  <span className="label">Carburant:</span>
-                  <span className="value">{vehicle.carburant || 'Non spécifié'}</span>
-                </div>
-                <div className="detail-item">
-                  <span className="label">Prix/jour:</span>
-                  <span className="value">{vehicle.pricePerDay || 0} DH</span>
-                </div>
-                <div className="detail-item">
-                  <span className="label">Disponible:</span>
-                  <span className={`value ${vehicle.available ? 'available' : 'not-available'}`}>
-                    {vehicle.available ? '✅ Oui' : '❌ Non'}
-                  </span>
-                </div>
               </div>
             </div>
           );
@@ -381,7 +363,7 @@ const InsuranceList = ({
         .text-orange-800 { color: #9a3412; }
 
         .insurance-info {
-          margin-bottom: 16px;
+          margin-bottom: 0;
           padding: 16px;
           background: #f8f9fa;
           border-radius: 8px;
@@ -441,64 +423,34 @@ const InsuranceList = ({
           color: #6b7280;
         }
 
-        .vehicle-details {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 8px;
-        }
-
-        .detail-item {
-          display: flex;
-          justify-content: space-between;
-          font-size: 14px;
-          color: #6b7280;
-        }
-
-        .detail-item .value {
-          color: #2c3e50;
-          font-weight: 500;
-        }
-
-        .available {
-          color: #10b981;
-        }
-
-        .not-available {
-          color: #ef4444;
-        }
-
         @media (max-width: 768px) {
           .vehicles-grid {
             grid-template-columns: 1fr;
           }
-          
+
           .filters-section {
             flex-direction: column;
             align-items: stretch;
           }
-          
+
           .filters {
             flex-direction: column;
           }
-          
+
           .filter-select,
           .search-input {
             min-width: auto;
             width: 100%;
           }
-          
+
           .card-header {
             flex-direction: column;
             align-items: flex-start;
           }
-          
+
           .status-badge {
             align-self: flex-start;
             margin-top: 8px;
-          }
-          
-          .vehicle-details {
-            grid-template-columns: 1fr;
           }
         }
       `}</style>
