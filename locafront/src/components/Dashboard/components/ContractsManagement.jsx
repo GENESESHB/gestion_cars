@@ -461,118 +461,135 @@ const ContractsManagement = ({ user, vehicles, contracts, setContracts, setMessa
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contrat de Location - ${contract.clientInfo.firstName} ${contract.clientInfo.lastName}</title>
+
+    <!-- MATERIAL ICONS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', Arial, sans-serif;
-            background: #fff;
-            color: #000;
+            background: linear-gradient(135deg, #F8FAFF 0%, #EEF3FF 40%, #E4ECFF 100%);
+            color: #0A1F44;
             margin: 0;
-            padding: 15px;
-            font-size: 9px;
-            line-height: 1.2;
+            padding: 20px;
+            font-size: 13px;
+        }
+
+        /* ===== PAGE (RECTO / VERSO) ===== */
+        .contract-page {
+            max-width: 800px;
+            margin: 0 auto 20px;
+            background: #fff;
+            padding: 24px 26px;
+            border-radius: 8px;
+            border: 1px solid #dce3f7;
         }
 
         .contract-container {
-            background: #fff;
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
+            width: 100%;
         }
 
-        /* ---- HEADER ---- */
+        /* ===== HEADER ===== */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #000;
-            padding-bottom: 8px;
-            margin-bottom: 15px;
+            border-bottom: 2px solid #E4ECFF;
+            padding-bottom: 12px;
+            margin-bottom: 18px;
         }
 
         .logo-container {
-            width: 60px;
-            height: 60px;
-            border-radius: 5px;
+            width: 70px;
+            height: 70px;
+            border-radius: 8px;
             overflow: hidden;
+            background: #EEF3FF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #dce3f7;
         }
 
         .logo-container img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-        }
-
-        .company-info {
-            flex: 1;
-            margin-left: 15px;
+            object-fit: contain;
         }
 
         .company-info h1 {
-            margin: 0;
-            font-size: 12px;
-            font-weight: 600;
-            color: #000;
-            text-transform: uppercase;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 0 4px 0;
+            color: #0A1F44;
         }
 
         .company-info p {
-            margin: 2px 0;
-            font-size: 8px;
+            margin: 0;
+            font-size: 11px;
         }
 
         .contract-number {
-            background: #000;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 10px;
-            font-size: 8px;
+            background: #0052CC;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
             font-weight: 600;
+            text-align: center;
         }
 
-        /* ---- SECTIONS ---- */
+        /* ===== SECTIONS ===== */
         .section {
-            background: #f8f8f8;
-            border-radius: 5px;
-            padding: 10px;
-            margin-bottom: 12px;
-            border: 1px solid #ccc;
+            background: #F8FAFF;
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 14px;
+            border: 1px solid #E4ECFF;
         }
 
         .section h3 {
-            font-size: 10px;
+            font-size: 14px;
             font-weight: 600;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 4px;
-            margin-bottom: 8px;
-            color: #000;
+            margin: 0 0 8px 0;
+            color: #0052CC;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #d3dcff;
         }
 
-        /* ---- TABLES ---- */
-        .info-table {
+        /* ===== TABLES ===== */
+        .info-table,
+        .two-column-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 5px 0;
         }
 
-        .info-table th {
-            background: #000;
-            color: white;
-            text-align: left;
+        .two-column-table th {
+            background: #EEF3FF;
             padding: 6px 8px;
-            font-weight: 600;
-            font-size: 8px;
+            border: 1px solid #dce3f7;
+            font-size: 11px;
+            color: #0A1F44;
+            text-transform: uppercase;
+        }
+
+        .two-column-table td {
+            border: 1px solid #dce3f7;
+            padding: 0;
+            vertical-align: top;
         }
 
         .info-table td {
-            padding: 4px 6px;
-            border-bottom: 1px solid #eee;
-            vertical-align: top;
-            font-size: 8px;
+            padding: 6px 10px;
+            border-bottom: 1px solid #E4ECFF;
+            font-size: 11px;
         }
 
         .info-table tr:last-child td {
@@ -581,331 +598,593 @@ const ContractsManagement = ({ user, vehicles, contracts, setContracts, setMessa
 
         .info-table .label {
             font-weight: 600;
-            width: 35%;
-            color: #000;
+            color: #0A1F44;
+            width: 40%;
         }
 
         .info-table .value {
-            width: 65%;
+            width: 60%;
         }
 
-        .two-column-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 8px 0;
-        }
-
-        .two-column-table th {
-            background: #e0e0e0;
-            color: #000;
-            text-align: left;
-            padding: 6px 8px;
-            font-weight: 600;
-            font-size: 8px;
-            border: 1px solid #ccc;
-        }
-
-        .two-column-table td {
-            padding: 6px 8px;
-            border: 1px solid #ccc;
-            vertical-align: top;
-            font-size: 8px;
-        }
-
-        /* ---- GRID INFO ---- */
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-        }
-
-        .info-item {
-            background: #fff;
-            padding: 6px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-
-        .info-item strong {
-            display: block;
-            margin-bottom: 2px;
-            font-weight: 600;
-            color: #000;
-            font-size: 8px;
-        }
-
-        .highlight {
-            background: #f0f0f0;
-            padding: 8px;
-            border-radius: 4px;
-            border: 1px solid #ddd;
-        }
-
+        /* ===== VEHICLE IMAGE ===== */
         .vehicle-image-container {
             text-align: center;
-            margin: 10px 0;
+            margin-bottom: 10px;
         }
 
         .vehicle-image {
             max-width: 200px;
-            border-radius: 5px;
-            border: 1px solid #aaa;
+            border-radius: 6px;
+            border: 2px solid #dce3f7;
         }
 
+        /* ===== ICONS FOR EQUIPMENT ===== */
+        .equipment-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: #0052CC;
+            color: #fff;
+            padding: 3px 9px;
+            border-radius: 16px;
+            font-size: 10px;
+            margin-right: 5px;
+            margin-bottom: 4px;
+        }
+
+        .equipment-tag i {
+            font-size: 13px;
+        }
+
+        /* ===== DAMAGES TAGS ===== */
         .damages-list {
             display: flex;
             flex-wrap: wrap;
             gap: 4px;
-            margin-top: 4px;
         }
 
         .damage-tag {
-            background: #f1c40f;
-            padding: 2px 6px;
-            border-radius: 10px;
-            font-size: 7px;
+            background: #FFCE54;
+            padding: 3px 8px;
+            border-radius: 16px;
+            border: 1px solid #e0a000;
+            font-size: 10px;
         }
 
-        .equipment-tag {
-            background: #3498db;
+        /* ===== TOTAL PRICE ===== */
+        .total-price {
+            background: #0052CC;
             color: #fff;
-            padding: 2px 4px;
-            border-radius: 6px;
-            font-size: 7px;
-            margin-right: 3px;
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 12px;
+            display: inline-block;
         }
 
-        /* ---- SIGNATURE ---- */
+        /* ===== SIGNATURES ===== */
         .signature {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 14px;
+            margin-top: 16px;
         }
 
         .signature-box {
-            border: 1px dashed #999;
-            border-radius: 4px;
-            padding: 12px;
+            border: 1px dashed #d0daf8;
+            padding: 14px;
+            border-radius: 8px;
+            background: #F8FAFF;
             text-align: center;
-            background: #fafafa;
+            font-size: 11px;
         }
 
         .footer {
-            margin-top: 15px;
-            font-size: 7px;
+            margin-top: 16px;
+            font-size: 10px;
+            text-align: center;
             color: #555;
-            text-align: center;
-            border-top: 1px solid #ccc;
-            padding-top: 6px;
+            border-top: 1px solid #E4ECFF;
+            padding-top: 8px;
         }
 
-        ul {
-            margin: 0;
-            padding-left: 15px;
-        }
-
-        ul li {
-            margin-bottom: 3px;
-            font-size: 8px;
-        }
-
-        .total-price {
-            background: #f1c40f;
-            color: #000;
-            font-weight: 600;
-            padding: 4px 8px;
-            border-radius: 3px;
-            text-align: center;
-            font-size: 8px;
-        }
-
-        .compact-row {
+        .footer p {
             margin: 2px 0;
         }
 
-        .compact-field {
-            display: inline-block;
-            margin-right: 10px;
-            font-size: 8px;
+        /* ===== CONDITIONS (VERSO) ===== */
+        .conditions-list {
+            list-style: decimal;
+            padding-left: 20px;
         }
 
-        .compact-label {
-            font-weight: 600;
-            margin-right: 3px;
+        .condition-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 12px;
+        }
+
+        .cond-fr {
+            flex: 1;
+            font-size: 13px;
+        }
+
+        .cond-ar {
+            flex: 1;
+            direction: rtl;
+            text-align: right;
+            font-size: 13px;
+            font-family: Tahoma, sans-serif;
+        }
+
+        /* Responsive mobile */
+        @media (max-width: 600px) {
+            .condition-row {
+                flex-direction: column;
+            }
+        }
+
+        /* PRINT A4 */
+        @page {
+            size: A4;
+            margin: 10mm;
+        }
+
+        @media print {
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                background: #fff !important;
+            }
+
+            .contract-page {
+                width: 100%;
+                max-width: 100%;
+                margin: 0;
+                border-radius: 0;
+                border: none;
+                page-break-after: always;
+            }
+
+            .contract-page:last-child {
+                page-break-after: auto;
+            }
+
+            .two-column-table,
+            .info-table {
+                width: 100%;
+                table-layout: fixed;
+            }
+
+            .two-column-table th,
+            .two-column-table td,
+            .info-table td {
+                word-wrap: break-word;
+                font-size: 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="contract-container">
-        <div class="header">
-            <div style="display: flex; align-items: center;">
-                ${partnerLogo ? `
-                <div class="logo-container">
-                    <img src="${partnerLogo}" alt="Logo ${partnerName}" />
+
+    <!-- ===== PAGE 1 : RECTO ===== -->
+    <div class="contract-page">
+        <div class="contract-container">
+            <div class="header">
+                <div style="display:flex;align-items:center;gap:10px;">
+                    ${partnerLogo ? `
+                    <div class="logo-container">
+                        <img src="${partnerLogo}" alt="Logo ${partnerName}" />
+                    </div>` : ''}
+                    <div class="company-info">
+                        <h1>CONTRAT DE LOCATION DE VÉHICULE</h1>
+                        <p><strong>${partnerName}</strong></p>
+                        <p>
+                            Date de génération :
+                            ${new Date().toLocaleDateString('fr-FR', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })}
+                        </p>
+                    </div>
                 </div>
-                ` : ''}
-                <div class="company-info">
-                    <h1>CONTRAT DE LOCATION DE VEHICULE</h1>
-                    <p><strong>${partnerName}</strong></p>
-                    <p>Date: ${new Date().toLocaleDateString('fr-FR')}</p>
+                <div class="contract-number">
+                    Contrat N°: ${contract._id}
                 </div>
             </div>
-            <div class="contract-number">
-                Contrat: ${contract._id}
-            </div>
-        </div>
 
-        <div class="section">
-            <h3>INFORMATIONS DES PARTIES</h3>
-            <table class="two-column-table">
-                <tr>
-                    <th>LOUEUR</th>
-                    <th>LOCATAIRE</th>
-                </tr>
-                <tr>
-                    <td>
-                        <table class="info-table">
-                            <tr><td class="label">Entreprise:</td><td class="value">${partnerInfo.partnerName || partnerName}</td></tr>
-                            <tr><td class="label">ID:</td><td class="value">${partnerInfo.partnerId || user._id || user.id}</td></tr>
-                            <tr><td class="label">Email:</td><td class="value">${partnerInfo.partnerEmail || user.email}</td></tr>
-                            <tr><td class="label">Telephone:</td><td class="value">${partnerInfo.partnerPhone || user.number || user.telephone || 'Non specifie'}</td></tr>
-                            <tr><td class="label">Pays:</td><td class="value">${partnerInfo.partnerCountry || user.country || 'Non specifie'}</td></tr>
-                            <tr><td class="label">Ville:</td><td class="value">${partnerInfo.partnerCity || user.city || 'Non specifie'}</td></tr>
-                        </table>
-                    </td>
-                    <td>
-                        <table class="info-table">
-                            <tr><td class="label">Nom:</td><td class="value">${contract.clientInfo.lastName}</td></tr>
-                            <tr><td class="label">Prenom:</td><td class="value">${contract.clientInfo.firstName}</td></tr>
-                            <tr><td class="label">Naissance:</td><td class="value">${contract.clientInfo.birthDate ? new Date(contract.clientInfo.birthDate).toLocaleDateString('fr-FR') : 'Non specifiee'}</td></tr>
-                            <tr><td class="label">Telephone:</td><td class="value">${contract.clientInfo.phone}</td></tr>
-                            <tr><td class="label">Adresse:</td><td class="value">${contract.clientInfo.address}</td></tr>
-                            <tr><td class="label">Passeport:</td><td class="value">${contract.clientInfo.passport || 'Non specifie'}</td></tr>
-                            <tr><td class="label">CIN:</td><td class="value">${contract.clientInfo.cin || 'Non specifie'}</td></tr>
-                            <tr><td class="label">Permis:</td><td class="value">${contract.clientInfo.licenseNumber}</td></tr>
-                            <tr><td class="label">Delivre le:</td><td class="value">${contract.clientInfo.licenseIssueDate ? new Date(contract.clientInfo.licenseIssueDate).toLocaleDateString('fr-FR') : 'Non specifie'}</td></tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        ${contract.secondDriverInfo && (contract.secondDriverInfo.lastName || contract.secondDriverInfo.firstName) ? `
-        <div class="section">
-            <h3>DEUXIEME CONDUCTEUR</h3>
-            <div class="highlight">
-                <table class="info-table">
-                    <tr><td class="label">Nom:</td><td class="value">${contract.secondDriverInfo.lastName}</td></tr>
-                    <tr><td class="label">Prenom:</td><td class="value">${contract.secondDriverInfo.firstName}</td></tr>
-                    <tr><td class="label">Permis:</td><td class="value">${contract.secondDriverInfo.licenseNumber || 'Non specifie'}</td></tr>
-                    <tr><td class="label">Delivre le:</td><td class="value">${contract.secondDriverInfo.licenseIssueDate ? new Date(contract.secondDriverInfo.licenseIssueDate).toLocaleDateString('fr-FR') : 'Non specifie'}</td></tr>
+            <!-- INFORMATIONS DES PARTIES -->
+            <div class="section">
+                <h3>INFORMATIONS DES PARTIES</h3>
+                <table class="two-column-table">
+                    <tr>
+                        <th>LOUEUR (Partenaire)</th>
+                        <th>LOCATAIRE (Client)</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <table class="info-table">
+                                <tr>
+                                    <td class="label">Nom entreprise :</td>
+                                    <td class="value">${partnerInfo.partnerName || partnerName}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Email :</td>
+                                    <td class="value">${partnerInfo.partnerEmail || user.email}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Téléphone :</td>
+                                    <td class="value">${partnerInfo.partnerPhone || user.number || user.telephone || 'Non spécifié'}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Pays :</td>
+                                    <td class="value">${partnerInfo.partnerCountry || user.country || 'Non spécifié'}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Ville :</td>
+                                    <td class="value">${partnerInfo.partnerCity || user.city || 'Non spécifié'}</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table class="info-table">
+                                <tr>
+                                    <td class="label">Nom :</td>
+                                    <td class="value">${contract.clientInfo.lastName}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Prénom :</td>
+                                    <td class="value">${contract.clientInfo.firstName}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Date de naissance :</td>
+                                    <td class="value">
+                                        ${contract.clientInfo.birthDate
+                                            ? new Date(contract.clientInfo.birthDate).toLocaleDateString('fr-FR')
+                                            : 'Non spécifiée'}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Téléphone :</td>
+                                    <td class="value">${contract.clientInfo.phone}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Adresse :</td>
+                                    <td class="value">${contract.clientInfo.address}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Passeport :</td>
+                                    <td class="value">${contract.clientInfo.passport || 'Non spécifié'}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">CIN :</td>
+                                    <td class="value">${contract.clientInfo.cin || 'Non spécifié'}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Permis de conduire :</td>
+                                    <td class="value">${contract.clientInfo.licenseNumber}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label">Délivré le :</td>
+                                    <td class="value">
+                                        ${contract.clientInfo.licenseIssueDate
+                                            ? new Date(contract.clientInfo.licenseIssueDate).toLocaleDateString('fr-FR')
+                                            : 'Non spécifié'}
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
                 </table>
             </div>
-        </div>
-        ` : ''}
 
-        <div class="section">
-            <h3>VEHICULE LOUE</h3>
-            <div class="highlight">
+            <!-- DEUXIÈME CONDUCTEUR -->
+            ${contract.secondDriverInfo && (contract.secondDriverInfo.lastName || contract.secondDriverInfo.firstName) ? `
+            <div class="section">
+                <h3>DEUXIÈME CONDUCTEUR</h3>
+                <table class="info-table">
+                    <tr>
+                        <td class="label">Nom :</td>
+                        <td class="value">${contract.secondDriverInfo.lastName}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Prénom :</td>
+                        <td class="value">${contract.secondDriverInfo.firstName}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Permis de conduire :</td>
+                        <td class="value">${contract.secondDriverInfo.licenseNumber || 'Non spécifié'}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Délivré le :</td>
+                        <td class="value">
+                            ${contract.secondDriverInfo.licenseIssueDate
+                                ? new Date(contract.secondDriverInfo.licenseIssueDate).toLocaleDateString('fr-FR')
+                                : 'Non spécifié'}
+                        </td>
+                    </tr>
+                </table>
+            </div>` : ''}
+
+            <!-- VÉHICULE LOUÉ -->
+            <div class="section">
+                <h3>VÉHICULE LOUÉ</h3>
+
+                ${vehicleImage ? `
+                <div class="vehicle-image-container">
+                    <img src="${vehicleImage}" alt="${vehicleInfo.name}" class="vehicle-image" />
+                </div>` : ''}
+
                 ${vehicleInfo ? `
-                    ${vehicleImage ? `
-                    <div class="vehicle-image-container">
-                        <img src="${vehicleImage}" alt="${vehicleInfo.name}" class="vehicle-image" />
-                    </div>
-                    ` : ''}
-
-                    <table class="info-table">
-                        <tr><td class="label">Vehicule:</td><td class="value">${vehicleInfo.name}</td></tr>
-                        <tr><td class="label">Type:</td><td class="value">${vehicleInfo.type}</td></tr>
-                        <tr><td class="label">Boite vitesse:</td><td class="value">${vehicleInfo.boiteVitesse}</td></tr>
-                        <tr><td class="label">Carburant:</td><td class="value">${vehicleInfo.carburant || 'Non specifie'}</td></tr>
-                        <tr><td class="label">Niveau reservoir:</td><td class="value">${vehicleInfo.niveauReservoir || 'Non specifie'}</td></tr>
-                        <tr><td class="label">KM depart:</td><td class="value">${vehicleInfo.kmDepart || 'Non specifie'} km</td></tr>
-                        <tr><td class="label">KM retour:</td><td class="value">${vehicleInfo.kmRetour || 'Non specifie'} km</td></tr>
-                        <tr><td class="label">Nombre cles:</td><td class="value">${vehicleInfo.nombreCles || 'Non specifie'}</td></tr>
-                        <tr><td class="label">Equipements:</td><td class="value">
-                            ${vehicleInfo.radio ? '<span class="equipment-tag">Radio</span>' : ''}
-                            ${vehicleInfo.gps ? '<span class="equipment-tag">GPS</span>' : ''}
-                            ${vehicleInfo.mp3 ? '<span class="equipment-tag">MP3</span>' : ''}
-                            ${vehicleInfo.cd ? '<span class="equipment-tag">CD</span>' : ''}
-                            ${!vehicleInfo.radio && !vehicleInfo.gps && !vehicleInfo.mp3 && !vehicleInfo.cd ? 'Aucun equipement' : ''}
-                        </td></tr>
-                        <tr><td class="label">Prix/jour:</td><td class="value">${contract.rentalInfo.prixParJour || vehicleInfo.pricePerDay} DH</td></tr>
-                        ${vehicleInfo.description ? `<tr><td class="label">Description:</td><td class="value">${vehicleInfo.description}</td></tr>` : ''}
-                        ${vehicleInfo.remarques ? `<tr><td class="label">Remarques:</td><td class="value">${vehicleInfo.remarques}</td></tr>` : ''}
-                        ${vehicleInfo.dommages && vehicleInfo.dommages.length > 0 ? `
-                        <tr><td class="label">Dommages:</td><td class="value">
+                <table class="info-table">
+                    <tr>
+                        <td class="label">Véhicule :</td>
+                        <td class="value">${vehicleInfo.name}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Type :</td>
+                        <td class="value">${vehicleInfo.type}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Boîte de vitesse :</td>
+                        <td class="value">${vehicleInfo.boiteVitesse}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Carburant :</td>
+                        <td class="value">${vehicleInfo.carburant || 'Non spécifié'}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Niveau réservoir :</td>
+                        <td class="value">${vehicleInfo.niveauReservoir || 'Non spécifié'}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Kilométrage départ :</td>
+                        <td class="value">${vehicleInfo.kmDepart || 'Non spécifié'} km</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Kilométrage retour :</td>
+                        <td class="value">${vehicleInfo.kmRetour || 'Non spécifié'} km</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Nombre de clés :</td>
+                        <td class="value">${vehicleInfo.nombreCles || 'Non spécifié'}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Équipements :</td>
+                        <td class="value">
+                            ${vehicleInfo.radio ? '<span class="equipment-tag"><i class="material-icons">radio</i>Radio</span>' : ''}
+                            ${vehicleInfo.gps ? '<span class="equipment-tag"><i class="material-icons">location_on</i>GPS</span>' : ''}
+                            ${vehicleInfo.mp3 ? '<span class="equipment-tag"><i class="material-icons">library_music</i>MP3</span>' : ''}
+                            ${vehicleInfo.cd ? '<span class="equipment-tag"><i class="material-icons">album</i>CD</span>' : ''}
+                            ${!vehicleInfo.radio && !vehicleInfo.gps && !vehicleInfo.mp3 && !vehicleInfo.cd ? 'Aucun équipement spécifié' : ''}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label">Prix par jour :</td>
+                        <td class="value">${contract.rentalInfo.prixParJour || vehicleInfo.pricePerDay} DH</td>
+                    </tr>
+                    ${vehicleInfo.description ? `
+                    <tr>
+                        <td class="label">Description :</td>
+                        <td class="value">${vehicleInfo.description}</td>
+                    </tr>` : ''}
+                    ${vehicleInfo.remarques ? `
+                    <tr>
+                        <td class="label">Remarques :</td>
+                        <td class="value">${vehicleInfo.remarques}</td>
+                    </tr>` : ''}
+                    ${vehicleInfo.dommages && vehicleInfo.dommages.length > 0 ? `
+                    <tr>
+                        <td class="label">Dommages existants :</td>
+                        <td class="value">
                             <div class="damages-list">
-                                ${vehicleInfo.dommages.map(damage => `<span class="damage-tag">${damage}</span>`).join('')}
+                                ${vehicleInfo.dommages.map(damage => `
+                                    <span class="damage-tag">${damage}</span>
+                                `).join('')}
                             </div>
-                        </td></tr>
-                        ` : ''}
-                        ${vehicleInfo.assuranceStartDate && vehicleInfo.assuranceEndDate ? `
-                        <tr><td class="label">Assurance:</td><td class="value">
+                        </td>
+                    </tr>` : ''}
+                    ${vehicleInfo.assuranceStartDate && vehicleInfo.assuranceEndDate ? `
+                    <tr>
+                        <td class="label">Assurance :</td>
+                        <td class="value">
                             Du ${new Date(vehicleInfo.assuranceStartDate).toLocaleDateString('fr-FR')}
                             au ${new Date(vehicleInfo.assuranceEndDate).toLocaleDateString('fr-FR')}
-                        </td></tr>
-                        ` : ''}
-                    </table>
-                ` : '<p>Informations vehicule non disponibles</p>'}
+                        </td>
+                    </tr>` : ''}
+                </table>` : '<p>Informations véhicule non disponibles</p>'}
             </div>
-        </div>
 
-        <div class="section">
-            <h3>DETAILS LOCATION</h3>
-            <div class="highlight">
+            <!-- DÉTAILS DE LA LOCATION -->
+            <div class="section">
+                <h3>DÉTAILS DE LA LOCATION</h3>
                 <table class="info-table">
-                    <tr><td class="label">Depart:</td><td class="value">${formatDate(contract.rentalInfo.startDateTime)}</td></tr>
-                    <tr><td class="label">Retour:</td><td class="value">${formatDate(contract.rentalInfo.endDateTime)}</td></tr>
-                    <tr><td class="label">Lieu depart:</td><td class="value">${contract.rentalInfo.startLocation}</td></tr>
-                    <tr><td class="label">Lieu retour:</td><td class="value">${contract.rentalInfo.endLocation}</td></tr>
-                    <tr><td class="label">Duree:</td><td class="value">${contract.rentalInfo.rentalDays} jours</td></tr>
-                    <tr><td class="label">Prix/jour:</td><td class="value">${contract.rentalInfo.prixParJour} DH</td></tr>
-                    <tr><td class="label">Total:</td><td class="value"><div class="total-price">${contract.rentalInfo.prixTotal} DH</div></td></tr>
+                    <tr>
+                        <td class="label">Date et heure de départ :</td>
+                        <td class="value">${formatDate(contract.rentalInfo.startDateTime)}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Date et heure de retour :</td>
+                        <td class="value">${formatDate(contract.rentalInfo.endDateTime)}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Lieu de départ :</td>
+                        <td class="value">${contract.rentalInfo.startLocation}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Lieu de retour :</td>
+                        <td class="value">${contract.rentalInfo.endLocation}</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Durée totale :</td>
+                        <td class="value">${contract.rentalInfo.rentalDays} jours</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Prix par jour :</td>
+                        <td class="value">${contract.rentalInfo.prixParJour} DH</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Prix total :</td>
+                        <td class="value">
+                            <span class="total-price">${contract.rentalInfo.prixTotal} DH</span>
+                        </td>
+                    </tr>
                 </table>
             </div>
-        </div>
 
-        <div class="section">
-            <h3>CONDITIONS GENERALES</h3>
-            <div class="highlight">
-                <ul>
-                    <li>Restitution du vehicule dans l'etat initial</li>
-                    <li>Dommages a charge du client</li>
-                    <li>Carburant a charge du client</li>
-                    <li>Retard: majoration 50% du prix journalier</li>
-                    <li>Plein de carburant obligatoire</li>
-                    <li>Interdiction de fumer</li>
-                    <li>Presentation permis et piece identite</li>
-                    <li>Caution: 5000 DH</li>
-                    <li>Kilometrage illimite</li>
-                    <li>Assurance tous risques incluse</li>
-                </ul>
+            <!-- SIGNATURES -->
+            <div class="signature">
+                <div class="signature-box">
+                    <p style="font-weight:600;margin-bottom:8px;">SIGNATURE DU CLIENT</p>
+                    <p style="margin-bottom:16px;">
+                        ${contract.clientInfo.firstName} ${contract.clientInfo.lastName}
+                    </p>
+                    <p style="color:#555;font-size:11px;">
+                        CIN : ${contract.clientInfo.cin || 'Non spécifié'}
+                    </p>
+                </div>
+                <div class="signature-box">
+                    <p style="font-weight:600;margin-bottom:8px;">SIGNATURE DU PARTENAIRE</p>
+                    <p style="margin-bottom:16px;">${partnerName}</p>
+                    <p style="color:#555;font-size:11px;">
+                        Entreprise : ${partnerName}
+                    </p>
+                </div>
             </div>
-        </div>
 
-        <div class="signature">
-            <div class="signature-box">
-                <p style="font-weight: 600; margin-bottom: 6px; font-size: 9px;">SIGNATURE CLIENT</p>
-                <p style="margin-bottom: 10px; font-size: 8px;">${contract.clientInfo.firstName} ${contract.clientInfo.lastName}</p>
-                <p style="color: #555; font-size: 7px;">CIN: ${contract.clientInfo.cin || 'Non specifie'}</p>
+            <div class="footer">
+                <p>
+                    Contrat généré par <strong>WegoRent</strong> - ${partnerName} -
+                    ${new Date().toLocaleDateString('fr-FR')}
+                </p>
+                <p>Pour toute réclamation, contactez : ${user.email}</p>
+                <p style="margin-top:4px;font-size:9px;">
+                    Ce document a une valeur contractuelle. Conservez-le précieusement.
+                </p>
             </div>
-            <div class="signature-box">
-                <p style="font-weight: 600; margin-bottom: 6px; font-size: 9px;">SIGNATURE PARTENAIRE</p>
-                <p style="margin-bottom: 10px; font-size: 8px;">${partnerName}</p>
-                <p style="color: #555; font-size: 7px;">Entreprise: ${partnerName}</p>
-            </div>
-        </div>
-
-        <div class="footer">
-            <p>Contrat genere par WegoRent - ${partnerName} - ${new Date().toLocaleDateString('fr-FR')}</p>
-            <p>Contact: ${user.email}</p>
-            <p style="margin-top: 5px; font-size: 6px; color: #777;">
-                Document contractuel - A conserver
-            </p>
         </div>
     </div>
+
+    <!-- ===== PAGE 2 : VERSO (CONDITIONS GÉNÉRALES) ===== -->
+    <div class="contract-page">
+        <div class="contract-container">
+            <div class="header">
+                <div class="company-info">
+                    <h1>CONDITIONS GÉNÉRALES DE LOCATION</h1>
+                    <p><strong>${partnerName}</strong></p>
+                    <p>Contrat N°: ${contract._id}</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>CONDITIONS GÉNÉRALES</h3>
+
+                <ol class="conditions-list">
+                    <li class="condition-row">
+                        <span class="cond-fr">1. Le client doit rendre la voiture dans le même état qu’au départ.</span>
+                        <span class="cond-ar">يجب على الزبون إرجاع السيارة بنفس الحالة التي استلمها بها.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">2. Tout dommage non déclaré au départ sera à la charge du client.</span>
+                        <span class="cond-ar">أي ضرر غير مصرح به عند الاستلام يكون على عاتق الزبون.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">3. Le carburant est à la charge du client pendant toute la durée de location.</span>
+                        <span class="cond-ar">الوقود يكون على حساب الزبون طوال مدة الكراء.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">4. En cas de retard, une pénalité sera appliquée selon les tarifs du loueur.</span>
+                        <span class="cond-ar">في حالة التأخير، تُطبق غرامة حسب تعريفات الوكالة.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">5. Le véhicule doit être rendu avec le même niveau de carburant qu’au départ.</span>
+                        <span class="cond-ar">يجب إرجاع السيارة بنفس مستوى الوقود عند الاستلام.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">6. Il est interdit de fumer dans le véhicule.</span>
+                        <span class="cond-ar">ممنوع التدخين داخل السيارة.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">7. Le client doit présenter un permis de conduire valide et une pièce d’identité.</span>
+                        <span class="cond-ar">يجب على الزبون تقديم رخصة سياقة سارية وبطاقة هوية.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">8. Une caution est obligatoire et restituée après vérification du véhicule.</span>
+                        <span class="cond-ar">الوديعة إلزامية ويتم إرجاعها بعد فحص السيارة.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">9. Le client est responsable des amendes et infractions pendant la location.</span>
+                        <span class="cond-ar">الزبون مسؤول عن جميع المخالفات والغرامات خلال مدة الكراء.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">10. Il est interdit de sortir le véhicule du Maroc sans autorisation écrite.</span>
+                        <span class="cond-ar">يمنع استعمال السيارة خارج التراب المغربي بدون إذن كتابي.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">11. En cas d’accident, le client doit prévenir immédiatement la police et le loueur.</span>
+                        <span class="cond-ar">في حالة حادث، يجب إبلاغ الشرطة والوكالة فوراً.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">12. Le client ne peut pas sous-louer ou prêter le véhicule à une autre personne.</span>
+                        <span class="cond-ar">يمنع على الزبون إعادة كراء السيارة أو إعارتها لشخص آخر.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">13. Le client doit respecter le Code de la route marocain.</span>
+                        <span class="cond-ar">يجب احترام قوانين السير في المغرب.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">14. Toute perte de clé ou document du véhicule sera facturée au client.</span>
+                        <span class="cond-ar">ضياع مفاتيح السيارة أو وثائقها يكون على حساب الزبون.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">15. Le véhicule doit être utilisé uniquement pour un usage normal et légal.</span>
+                        <span class="cond-ar">يجب استعمال السيارة فقط في الاستعمال القانوني والعادي.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">16. Les équipements supplémentaires sont disponibles sur demande.</span>
+                        <span class="cond-ar">المعدات الإضافية متوفرة عند الطلب.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">17. Les pneus, jantes ou vitres cassés sont à la charge du client sauf assurance spéciale.</span>
+                        <span class="cond-ar">العجلات أو الزجاج المكسور يكون على حساب الزبون ما لم توجد تأمينات إضافية.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">18. Toute réparation non autorisée est interdite.</span>
+                        <span class="cond-ar">يمنع القيام بأي إصلاح دون إذن من الوكالة.</span>
+                    </li>
+
+                    <li class="condition-row">
+                        <span class="cond-fr">19. Le client doit vérifier régulièrement l’huile et l’eau du moteur.</span>
+                        <span class="cond-ar">يجب على الزبون مراقبة مستوى الزيت والماء في المحرك بانتظام.</span>
+                    </li>
+
+                    
+                </ol>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
     `);
@@ -1045,3 +1324,4 @@ const ContractsManagement = ({ user, vehicles, contracts, setContracts, setMessa
 };
 
 export default ContractsManagement;
+
