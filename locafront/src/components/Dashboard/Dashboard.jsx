@@ -32,8 +32,6 @@ const Dashboard = () => {
       loadContracts();
       loadBlacklist();
       loadClients();
-      loadSmartContracts(); // Load smart contracts
-      loadInsurances(); // Load insurances
     }
   }, [user]);
 
@@ -84,36 +82,6 @@ const Dashboard = () => {
     }
   };
 
-  // New function to load smart contracts
-  const loadSmartContracts = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get('/smart-contracts/my-contracts');
-      console.log('✅ Smart contracts chargés:', res.data);
-      setSmartContracts(res.data.smartContracts);
-    } catch (err) {
-      console.error('❌ Erreur loading smart contracts:', err);
-      setMessage('Erreur lors du chargement des smart contracts');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // New function to load insurances
-  const loadInsurances = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get('/insurances/my-insurances');
-      console.log('✅ Assurances chargées:', res.data);
-      setInsurances(res.data.insurances);
-    } catch (err) {
-      console.error('❌ Erreur loading insurances:', err);
-      setMessage('Erreur lors du chargement des assurances');
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const renderActiveSection = () => {
     const commonProps = {
       user,
@@ -133,9 +101,7 @@ const Dashboard = () => {
       loadVehicles,
       loadContracts,
       loadBlacklist,
-      loadClients,
-      loadSmartContracts, // Add loadSmartContracts to props
-      loadInsurances // Add loadInsurances to props
+      loadClients
     };
 
     switch (activeSection) {
